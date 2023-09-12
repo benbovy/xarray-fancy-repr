@@ -24,7 +24,17 @@ DTYPE = tt.Unicode()
 INLINE_REPR = tt.Unicode()
 ATTRS = tt.Dict(value_trait=tt.Unicode(), key_trait=tt.Unicode())
 DATA_REPR = tt.Unicode()
-VARIABLE = tt.Tuple(NAME, HAS_INDEX, DIMS, DTYPE, INLINE_REPR, ATTRS, DATA_REPR)
+VARIABLE = tt.Dict(
+    per_key_traits={
+        "name": NAME,
+        "has_index": HAS_INDEX,
+        "dims": DIMS,
+        "dtype": DTYPE,
+        "inlineRepr": INLINE_REPR,
+        "attrs": ATTRS,
+        "dataRepr": DATA_REPR
+    },
+)
 
 
 def encode_attrs(attrs: Mapping):
@@ -45,9 +55,15 @@ def _encode_variable(
     attrs = encode_attrs(var.attrs)
     data_repr = short_data_repr_html(variable)
 
-    return (
-        name, has_index, dims, dtype, inline_repr, attrs, data_repr
-    )
+    return {
+        "name": name,
+        "has_index": has_index,
+        "dims": dims,
+        "dtype": dtype,
+        "inlineRepr": inline_repr,
+        "attrs": attrs,
+        "dataRepr": data_repr,
+    }
 
 
 def encode_variables(
