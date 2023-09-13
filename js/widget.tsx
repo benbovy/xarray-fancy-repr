@@ -216,6 +216,25 @@ const DimsSection = (props: DimsSectionProps) => {
     );
 };
 
+
+const Search = () => {
+    const [_, setQuery] = useModelState<string>("_filter_query");
+
+    let inputHandler = (e) => {
+        //convert input text to lower case
+        var lowerCase = e.target.value.toLowerCase();
+        setQuery(lowerCase);
+    };
+
+    return (
+        <input
+            type="text"
+            onChange={inputHandler}
+            placeholder="Search by name, dim, attr..."
+        />
+    )
+}
+
 export const render = createRender(() => {
     const [dims, _0] = useModelState<DimSizes>("_dims");
     const [coords, _1] = useModelState<Variable[]>("_coords");
@@ -227,7 +246,7 @@ export const render = createRender(() => {
         <div>
             <div className="xr-wrap">
                 <div className="xr-header">
-                    <div className="xr-obj-type">xarray.Dataset</div>
+                    <div className="xr-obj-type">xarray.Dataset <Search /></div>
                 </div>
                 <ul className="xr-sections">
                     <li className="xr-section-item">

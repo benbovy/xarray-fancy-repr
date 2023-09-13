@@ -57,6 +57,10 @@ body.vscode-dark {
   margin-bottom: 0;
 }
 
+.xr-header input {
+  float: right;
+}
+
 .xr-obj-type,
 .xr-array-name {
   margin-left: 2px;

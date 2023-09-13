@@ -104,6 +104,7 @@ class DatasetWidget(anywidget.AnyWidget):
     _data_vars = tt.List(VARIABLE).tag(sync=True)
     _indexes = tt.List(INDEX).tag(sync=True)
     _attrs = ATTRS.tag(sync=True)
+    _filter_query = tt.Unicode().tag(sync=True)
 
     def __init__(self, dataset: xr.Dataset):
         self._dataset = dataset
@@ -115,3 +116,18 @@ class DatasetWidget(anywidget.AnyWidget):
             _indexes=encode_indexes(dataset.xindexes),
             _attrs=encode_attrs(dataset.attrs),
         )
+
+    @tt.observe("_filter_query")
+    def _filter(self, change):
+        name = change["new"]
+
+        if name == "":
+            new_coords = self._dataset.coords
+            new_data_vars = self._dataset.data_vars
+        else:
+            new_coords = {k: v for k, v in self._dataset.coords.items() if name in v.dims}
+            new_data_vars = {k: v for k, v in self._dataset.data_vars.items() if name in v.dims}
+
+        with self.hold_sync():
+            self._coords = encode_variables(new_coords, self._dataset.xindexes)
+            self._data_vars = encode_variables(new_data_vars)
