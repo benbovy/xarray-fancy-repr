@@ -3,6 +3,9 @@
  */
 
 :root {
+  --xr-font-family: var(--jp-content-font-family);
+  --xr-font-size: var(--jp-content-font-size1);
+  --xr-line-height: var(--jp-content-line-height);
   --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
   --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
   --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
@@ -30,6 +33,9 @@ body.vscode-dark {
   display: block !important;
   min-width: 300px;
   max-width: 700px;
+  font-size: var(--xr-font-size);
+  font-family: var(--xr-font-family);
+  line-height: var(--xr-line-height);
 }
 
 .xr-text-repr-fallback {
@@ -226,6 +232,11 @@ body.vscode-dark {
   background-color: var(--xr-background-color-row-odd);
 }
 
+.xr-var-list .selected,
+.xr-var-list .selected > span {
+  background-color: #000 !important;
+}
+
 .xr-var-name {
   grid-column: 1;
 }
@@ -335,8 +346,8 @@ dl.xr-attrs {
   word-break: break-all;
 }
 
-.xr-icon-database,
-.xr-icon-file-text2,
+.xr-icon-data,
+.xr-icon-attrs,
 .xr-no-icon {
   display: inline-block;
   vertical-align: middle;
