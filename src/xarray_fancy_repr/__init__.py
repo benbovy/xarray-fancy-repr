@@ -22,3 +22,4 @@ def _patched_repr_mimebundle(self, **kwargs: dict) -> tuple[None | dict, dict]:
 
 
 xr.Dataset._repr_mimebundle_ = _patched_repr_mimebundle  # type: ignore
+xr.DataArray._repr_mimebundle_ = _patched_repr_mimebundle  # type: ignore
