@@ -7,7 +7,7 @@ notebooks.
 ## Installation
 
 ```sh
-pip install xarray_fancy_repr
+pip install xarray-fancy-repr
 ```
 
 ## How Does it Work?
@@ -22,7 +22,7 @@ Xarray objects are patched so that they are displayed in the following fallback
 order:
 
 1. Interactive widget: should work in most notebook environments (JupyterLab,
-   Jupyter Notebook <7,7+, Google Colab, VSCode, etc.), based on
+   Jupyter Notebook <7 and 7+, Google Colab, VSCode, etc.) based on
    [anywidget](https://anywidget.dev/)
 2. Static HTML: should work in any web browser
 3. Plain text
