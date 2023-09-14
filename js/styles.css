@@ -9,11 +9,14 @@
   --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
   --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
   --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
+  --xr-border-color: var(--jp-border-color1, #bdbdbd);
+  --xr-border-color2: var(--jp-border-color2, #e0e0e0);
+  --xr-border-radius: var(--jp-border-radius, 2px);
   --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
   --xr-background-color: var(--jp-layout-color0, white);
   --xr-background-color-row-even: var(--jp-layout-color1, white);
   --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+  --xr-warn-color: var(--jp-warn-color1, #ed7f10);
 }
 
 html[theme="dark"],
@@ -22,7 +25,7 @@ body.vscode-dark {
   --xr-font-color0: rgba(255, 255, 255, 1);
   --xr-font-color2: rgba(255, 255, 255, 0.54);
   --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1f1f1f;
+  --xr-border-color2: #1f1f1f;
   --xr-disabled-color: #515151;
   --xr-background-color: #111111;
   --xr-background-color-row-even: #111111;
@@ -49,7 +52,7 @@ body.vscode-dark {
   align-items: center;
   margin-top: 6px;
   margin-bottom: 0;
-  border-bottom: solid 1px var(--xr-border-color);
+  border-bottom: solid 1px var(--xr-border-color2);
 }
 
 .xr-header > div,
@@ -72,6 +75,25 @@ body.vscode-dark {
 
 .xr-search {
   margin-left: auto;
+}
+
+.xr-search > input {
+  background-color: var(--xr-background-color);
+  color: var(--xr-font-color0);
+  border: solid 1px var(--xr-border-color);
+  border-radius: var(--xr-border-radius);
+}
+
+.xr-search > input:focus {
+  outline: var(--xr-border-color) solid 1px;
+}
+
+.xr-search > input.active {
+  border-color: var(--xr-warn-color);
+}
+
+.xr-search > input.active:focus {
+  outline: var(--xr-warn-color) solid 1px;
 }
 
 .xr-sections {
