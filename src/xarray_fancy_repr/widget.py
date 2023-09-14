@@ -27,6 +27,7 @@ VARIABLE = tt.Dict(
         "inlineRepr": tt.Unicode(),
         "attrs": ATTRS,
         "dataRepr": tt.Unicode(),
+        "inMemory": tt.Bool(),
     },
 )
 INDEX = tt.Dict(

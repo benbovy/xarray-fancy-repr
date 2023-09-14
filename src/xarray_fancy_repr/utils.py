@@ -31,6 +31,7 @@ def _encode_variable(
         "inlineRepr": inline_repr,
         "attrs": attrs,
         "dataRepr": data_repr,
+        "inMemory": var._in_memory,
     }
 
 

@@ -21,4 +21,5 @@ export type Variable = {
   inlineRepr: string;
   attrs: Attrs;
   dataRepr: string;
+  inMemory: boolean;
 };
