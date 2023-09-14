@@ -3,8 +3,8 @@
     "dev": "npm run build -- --sourcemap=inline --watch",
     "build": "esbuild --minify --format=esm --bundle --outdir=src/xarray_fancy_repr/static js/widget.tsx",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --ignore-path=.gitignore --use-tabs --write .",
-    "lint": "prettier --ignore-path=.gitignore --use-tabs --check ."
+    "format": "prettier --ignore-path=.gitignore --write .",
+    "lint": "prettier --ignore-path=.gitignore --check ."
   },
   "dependencies": {
     "@anywidget/react": "^0.0.2",

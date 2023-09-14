@@ -14,7 +14,7 @@ pip install xarray-fancy-repr
 
 After importing this package:
 
-``` python
+```python
 import xarray_fancy_repr
 ```
 
