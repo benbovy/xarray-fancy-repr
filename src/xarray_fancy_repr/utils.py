@@ -1,4 +1,4 @@
-from typing import Hashable, Mapping
+from collections.abc import Hashable, Mapping
 
 import xarray as xr
 from xarray.core.formatting import inline_index_repr, inline_variable_array_repr
@@ -11,9 +11,7 @@ def encode_attrs(attrs: Mapping) -> dict[str, str]:
 
 
 def _encode_variable(
-    name: Hashable,
-    var: xr.Variable | xr.DataArray,
-    has_index: bool = False
+    name: Hashable, var: xr.Variable | xr.DataArray, has_index: bool = False
 ) -> dict:
     if isinstance(var, xr.DataArray):
         var = var.variable
@@ -38,15 +36,12 @@ def _encode_variable(
 
 def encode_variables(
     variables: Mapping[Hashable, xr.Variable | xr.DataArray],
-    indexes: Mapping[Hashable, xr.Index] | None = None
+    indexes: Mapping[Hashable, xr.Index] | None = None,
 ) -> list[dict]:
     if indexes is None:
         indexes = {}
 
-    encoded = [
-        _encode_variable(k, v, has_index=k in indexes)
-        for k, v in variables.items()
-    ]
+    encoded = [_encode_variable(k, v, has_index=k in indexes) for k, v in variables.items()]
 
     return encoded
 

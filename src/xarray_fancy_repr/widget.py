@@ -11,11 +11,10 @@ from xarray_fancy_repr.utils import (
     encode_variables,
 )
 
-
 DIMS = tt.List(tt.Unicode())
 DIM_INFO = tt.Dict(
     value_trait=tt.Dict(per_key_traits={"size": tt.Int(), "hasIndex": tt.Bool()}),
-    key_trait=tt.Unicode()
+    key_trait=tt.Unicode(),
 )
 DIMS_HAS_INDEX = tt.Dict(value_trait=tt.Bool(), key_trait=tt.Unicode())
 ATTRS = tt.Dict(value_trait=tt.Unicode(), key_trait=tt.Unicode())
