@@ -1,18 +1,21 @@
 {
-	"scripts": {
-		"dev": "npm run build -- --sourcemap=inline --watch",
-		"build": "esbuild --minify --format=esm --bundle --outdir=src/xarray_fancy_repr/static js/widget.tsx",
-		"typecheck": "tsc --noEmit"
-	},
-	"dependencies": {
-		"@anywidget/react": "^0.0.2",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
-	},
-	"devDependencies": {
-		"esbuild": "^0.19.2",
-		"@types/react": "^18.2.21",
-		"@types/react-dom": "^18.2.7",
-		"typescript": "^5.2.2"
-	}
+  "scripts": {
+    "dev": "npm run build -- --sourcemap=inline --watch",
+    "build": "esbuild --minify --format=esm --bundle --outdir=src/xarray_fancy_repr/static js/widget.tsx",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --ignore-path=.gitignore --use-tabs --write .",
+    "lint": "prettier --ignore-path=.gitignore --use-tabs --check ."
+  },
+  "dependencies": {
+    "@anywidget/react": "^0.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.2",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  }
 }
