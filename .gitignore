@@ -1,0 +1,17 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+*.py[cod]
+*.egg
+build
+htmlcov
+
+node_modules
+dist
+
+__pycache__
+.ipynb_checkpoints
+
+src/xarray_fancy_repr/static/
