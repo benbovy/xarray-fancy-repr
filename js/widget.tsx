@@ -2,6 +2,26 @@ import * as React from "react";
 import { createRender, useModelState } from "@anywidget/react";
 import "./styles.css";
 
+const XarrayIcon = () => {
+    return (
+        <svg
+            width="32"
+            height="32"
+            version="1.1"
+            viewBox="0 0 355.4 317.33"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path d="m224.8 198.36 56.692-56.688v113.38l-56.692 56.692z" fill="#ff8000"/>
+            <path d="m5.6005 198.36 56.688-56.688 151.18-4e-3 -56.688 56.692z" fill="#df809f"/>
+            <path d="m5.6005 62.295h151.17l9e-3 113.38-151.19 4e-3z" fill="#bfdfdf"/>
+            <path d="m5.6005 62.295 56.688-56.688 151.18-0.0039999-56.688 56.688z" fill="#80bfbf"/>
+            <path d="m156.77 62.295 56.701-56.688-4e-3 113.38-56.688 56.688z" fill="#419f9f"/>
+            <path d="m292.85 198.35 56.688-56.684v113.38l-56.692 56.692z" fill="#ff4040"/>
+            <path d="m5.5961 198.36 151.18-4e-4 9e-3 113.38-151.19 4e-3z" fill="#efbfcf"/>
+            <path d="m156.78 198.36 56.688-56.692v113.39l-56.688 56.688z" fill="#cf4070"/>
+        </svg>
+    )
+}
 
 const DataIcon = () => {
     return (
@@ -33,8 +53,8 @@ const AttrsIcon = () => {
 }
 
 type Dims = string[];
-type DimSizes = {
-    [key: string]: number;
+type DimInfo = {
+    [key: string]: {"size": number, "hasIndex": boolean};
 };
 type Attrs = {
     [key: string]: string;
@@ -202,15 +222,25 @@ const MappingSection = (props: MappingSectionProps) => {
 };
 
 interface DimsSectionProps {
-    dimSizes: DimSizes
+    dimInfo: DimInfo
 }
 
 const DimsSection = (props: DimsSectionProps) => {
+    const items = Object.entries(props.dimInfo).map(([dim, value]) => (
+        <>
+            <li>
+                <span className={value.hasIndex ? "xr-has-index" : ""}>{dim}</span>: {value.size}
+            </li>
+        </>
+    ));
+
     return (
         <>
             <input className="xr-section-summary-in" type="checkbox" checked={false} disabled={true} />
             <label className="xr-section-summary">Dimensions:</label>
-            <div className="xr-section-inline-details">TODO</div>
+            <div className="xr-section-inline-details">
+                <ul className="xr-dim-list">{items}</ul>
+            </div>
             <div className="xr-section-details"></div>
         </>
     );
@@ -220,8 +250,7 @@ const DimsSection = (props: DimsSectionProps) => {
 const Search = () => {
     const [_, setQuery] = useModelState<string>("_filter_query");
 
-    let inputHandler = (e) => {
-        //convert input text to lower case
+    let inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         var lowerCase = e.target.value.toLowerCase();
         setQuery(lowerCase);
     };
@@ -230,13 +259,13 @@ const Search = () => {
         <input
             type="text"
             onChange={inputHandler}
-            placeholder="Search by name, dim, attr..."
+            placeholder="Search by dimension..."
         />
     )
 }
 
 export const render = createRender(() => {
-    const [dims, _0] = useModelState<DimSizes>("_dims");
+    const [dimInfo, _0] = useModelState<DimInfo>("_dim_info");
     const [coords, _1] = useModelState<Variable[]>("_coords");
     const [dataVars, _2] = useModelState<Variable[]>("_data_vars");
     const [indexes, _3] = useModelState<Index[]>("_indexes");
@@ -246,11 +275,13 @@ export const render = createRender(() => {
         <div>
             <div className="xr-wrap">
                 <div className="xr-header">
-                    <div className="xr-obj-type">xarray.Dataset <Search /></div>
+                    <div><XarrayIcon /></div>
+                    <div className="xr-obj-type">xarray.Dataset</div>
+                    <div className="xr-search"><Search /></div>
                 </div>
                 <ul className="xr-sections">
                     <li className="xr-section-item">
-                        <DimsSection dimSizes={dims} />
+                        <DimsSection dimInfo={dimInfo} />
                     </li>
                     <li className="xr-section-item">
                         <MappingSection

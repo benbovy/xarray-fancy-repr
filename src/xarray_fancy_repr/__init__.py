@@ -17,7 +17,11 @@ except importlib.metadata.PackageNotFoundError:
 
 
 DIMS = tt.List(tt.Unicode())
-DIMS_SIZES = tt.Dict(value_trait=tt.Int(), key_trait=tt.Unicode())
+DIM_INFO = tt.Dict(
+    value_trait=tt.Dict(per_key_traits={"size": tt.Int(), "hasIndex": tt.Bool()}),
+    key_trait=tt.Unicode()
+)
+DIMS_HAS_INDEX = tt.Dict(value_trait=tt.Bool(), key_trait=tt.Unicode())
 ATTRS = tt.Dict(value_trait=tt.Unicode(), key_trait=tt.Unicode())
 VARIABLE = tt.Dict(
     per_key_traits={
@@ -95,11 +99,19 @@ def encode_indexes(indexes: Indexes) -> list[dict]:
     return encoded
 
 
+def encode_dim_info(obj: xr.Dataset | xr.DataArray):
+    encoded = {}
+    indexed_dims = obj.xindexes.dims
+    for dim, size in obj.sizes.items():
+        encoded[dim] = {"size": size, "hasIndex": dim in indexed_dims}
+    return encoded
+
+
 class DatasetWidget(anywidget.AnyWidget):
     _esm = pathlib.Path(__file__).parent / "static" / "widget.js"
     _css = pathlib.Path(__file__).parent / "static" / "widget.css"
 
-    _dims = DIMS_SIZES.tag(sync=True)
+    _dim_info = DIM_INFO.tag(sync=True)
     _coords = tt.List(VARIABLE).tag(sync=True)
     _data_vars = tt.List(VARIABLE).tag(sync=True)
     _indexes = tt.List(INDEX).tag(sync=True)
@@ -110,7 +122,7 @@ class DatasetWidget(anywidget.AnyWidget):
         self._dataset = dataset
 
         super().__init__(
-            _dims=dict(dataset.dims),
+            _dim_info=encode_dim_info(dataset),
             _coords=encode_variables(dataset.coords, dataset.xindexes),
             _data_vars=encode_variables(dataset.data_vars),
             _indexes=encode_indexes(dataset.xindexes),

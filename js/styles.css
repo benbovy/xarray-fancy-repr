@@ -32,7 +32,7 @@ body.vscode-dark {
 .xr-wrap {
   display: block !important;
   min-width: 300px;
-  max-width: 700px;
+  max-width: 800px;
   font-size: var(--xr-font-size);
   font-family: var(--xr-font-family);
   line-height: var(--xr-line-height);
@@ -44,9 +44,11 @@ body.vscode-dark {
 }
 
 .xr-header {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-bottom: 4px;
+  display: flex;
+  align-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  margin-bottom: 0;
   border-bottom: solid 1px var(--xr-border-color);
 }
 
@@ -55,20 +57,21 @@ body.vscode-dark {
   display: inline;
   margin-top: 0;
   margin-bottom: 0;
-}
-
-.xr-header input {
-  float: right;
+  vertical-align: middle;
 }
 
 .xr-obj-type,
 .xr-array-name {
-  margin-left: 2px;
+  margin-left: 8px;
   margin-right: 10px;
 }
 
 .xr-obj-type {
   color: var(--xr-font-color2);
+}
+
+.xr-search {
+	margin-left: auto;
 }
 
 .xr-sections {
