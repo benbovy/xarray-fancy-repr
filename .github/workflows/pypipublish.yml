@@ -7,9 +7,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
+    environment:
       name: pypi
       url: https://pypi.org/p/xarray-fancy-repr
+    permissions:
       id-token: write
     steps:
       - name: Checkout
