@@ -49,7 +49,8 @@ class XarrayWidget(anywidget.AnyWidget):
     _data_vars = tt.List(VARIABLE).tag(sync=True)
     _indexes = tt.List(INDEX).tag(sync=True)
     _attrs = ATTRS.tag(sync=True)
-    _filter_query = tt.Unicode().tag(sync=True)
+    _filter_search = tt.Unicode().tag(sync=True)
+    _filter_by = tt.Tuple(("name",)).tag(sync=True)
 
     def __init__(self, obj: XarrayObject):
         self._obj = obj
@@ -64,20 +65,65 @@ class XarrayWidget(anywidget.AnyWidget):
             _attrs=encode_attrs(self._wrapped.attrs),
         )
 
-    @tt.observe("_filter_query")
-    def _filter(self, change):
-        query = change["new"]
+    def _filter_clear(self):
+        with self.hold_sync():
+            self._coords = encode_variables(self._wrapped.coords, self._wrapped.xindexes)
+            self._data_vars = encode_variables(self._wrapped.data_vars)
+            self._attrs = encode_attrs(self._wrapped.attrs)
 
-        if query == "":
-            new_coords = self._wrapped.coords
-        else:
-            new_coords = {k: v for k, v in self._wrapped.coords.items() if query in v.dims}
+    def _filter_vars_and_attrs(self, query, by):
+        if query == "" or not len(by):
+            self._filter_clear()
+            return
 
-        if query == "" or self._wrapped.obj_type != "dataset":
+        def in_dims(dims):
+            return any(query in d for d in dims)
+
+        def in_attrs(attrs):
+            return any(query in k or query in v for k, v in attrs.items())
+
+        coord_names = set()
+        data_var_names = set()
+
+        if "name" in by:
+            coord_names.update({k for k in self._wrapped.coords if query in k})
+            data_var_names.update({k for k in self._wrapped.data_vars if query in k})
+        if "dim" in by:
+            coord_names.update({k for k, v in self._wrapped.coords.items() if in_dims(v.dims)})
+            data_var_names.update(
+                {k for k, v in self._wrapped.data_vars.items() if in_dims(v.dims)}
+            )
+        if "attrs" in by:
+            coord_names.update({k for k, v in self._wrapped.coords.items() if in_attrs(v.attrs)})
+            data_var_names.update(
+                {k for k, v in self._wrapped.data_vars.items() if in_attrs(v.attrs)}
+            )
+
+        new_coords = {k: v for k, v in self._wrapped.coords.items() if k in coord_names}
+        # do not filter data vars for DataArray or Variable (used to store the unique array)
+        if self._wrapped.obj_type != "dataset":
             new_data_vars = self._wrapped.data_vars
         else:
-            new_data_vars = {k: v for k, v in self._wrapped.data_vars.items() if query in v.dims}
+            new_data_vars = {
+                k: v for k, v in self._wrapped.data_vars.items() if k in data_var_names
+            }
+
+        if "attrs" in by:
+            new_attrs = {k: v for k, v in self._wrapped.attrs.items() if query in k or query in v}
+        else:
+            new_attrs = self._wrapped.attrs
 
         with self.hold_sync():
             self._coords = encode_variables(new_coords, self._wrapped.xindexes)
             self._data_vars = encode_variables(new_data_vars)
+            self._attrs = encode_attrs(new_attrs)
+
+    @tt.observe("_filter_search")
+    def _handle_filter_search(self, change):
+        query = change["new"]
+        self._filter_vars_and_attrs(query, self._filter_by)
+
+    @tt.observe("_filter_by")
+    def _handle_filter_by(self, change):
+        by = change["new"]
+        self._filter_vars_and_attrs(self._filter_search, by)

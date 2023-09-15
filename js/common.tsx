@@ -193,16 +193,12 @@ export const DimsSection = ({ dimInfo }: { dimInfo: DimInfo }) => {
   );
 };
 
-export const ArraySection = ({variable}: {variable: Variable}) => {
+export const ArraySection = ({ variable }: { variable: Variable }) => {
   const [collapsed, setCollapsed] = React.useState<boolean>(false);
 
   return (
     <div className="xr-array-wrap">
-      <input
-        className="xr-array-in"
-        type="checkbox"
-        checked={!collapsed}
-      />
+      <input className="xr-array-in" type="checkbox" checked={!collapsed} />
       <label
         onClick={() => setCollapsed(!collapsed)}
         title="Show/hide data repr"
@@ -217,5 +213,5 @@ export const ArraySection = ({variable}: {variable: Variable}) => {
         dangerouslySetInnerHTML={{ __html: variable.dataRepr }}
       ></div>
     </div>
-  )
+  );
 };

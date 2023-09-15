@@ -28,9 +28,7 @@ const DatasetWidget = () => {
             <XarrayIcon />
           </div>
           <div className="xr-obj-type">xarray.Dataset</div>
-          <div className="xr-search">
-            <Search />
-          </div>
+          <Search />
         </div>
         <ul className="xr-sections">
           <li className="xr-section-item">
@@ -98,9 +96,7 @@ const DataArrayWidget = () => {
           <div className="xr-obj-type">xarray.DataArray</div>
           <div className="xr-array-name">{name}</div>
           <DimsList dimInfo={dimInfo} />
-          <div className="xr-search">
-            <Search />
-          </div>
+          <Search />
         </div>
         <ul className="xr-sections">
           <li className="xr-section-item">
@@ -152,9 +148,7 @@ const CoordinatesWidget = () => {
             <XarrayIcon />
           </div>
           <div className="xr-obj-type">xarray.Coordinates</div>
-          <div className="xr-search">
-            <Search />
-          </div>
+          <Search />
         </div>
         <ul className="xr-sections">
           <li className="xr-section-item">

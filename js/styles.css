@@ -49,18 +49,10 @@ body.vscode-dark {
 .xr-header {
   display: flex;
   align-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-top: 6px;
-  margin-bottom: 0;
+  padding-bottom: 6px;
   border-bottom: solid 1px var(--xr-border-color2);
-}
-
-.xr-header > div,
-.xr-header > ul {
-  display: inline;
-  margin-top: 0;
-  margin-bottom: 0;
-  vertical-align: middle;
 }
 
 .xr-obj-type,
@@ -75,6 +67,7 @@ body.vscode-dark {
 
 .xr-search {
   margin-left: auto;
+  text-align: right;
 }
 
 .xr-search > input {
@@ -82,6 +75,7 @@ body.vscode-dark {
   color: var(--xr-font-color0);
   border: solid 1px var(--xr-border-color);
   border-radius: var(--xr-border-radius);
+  vertical-align: middle;
 }
 
 .xr-search > input:focus {
@@ -94,6 +88,28 @@ body.vscode-dark {
 
 .xr-search > input.active:focus {
   outline: var(--xr-warn-color) solid 1px;
+}
+
+.xr-search > button {
+  display: inline;
+  color: var(--xr-font-color2);
+  background-color: var(--xr-background-color);
+  border: none;
+}
+
+.xr-search > button:hover {
+  color: var(--xr-font-color0);
+  cursor: pointer;
+}
+
+.xr-search ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hidden {
+  display: none;
 }
 
 .xr-sections {
@@ -375,8 +391,13 @@ dl.xr-attrs {
   word-break: break-all;
 }
 
+.xr-icon-xarray {
+  vertical-align: bottom;
+}
+
 .xr-icon-data,
 .xr-icon-attrs,
+.xr-icon-filter,
 .xr-no-icon {
   display: inline-block;
   vertical-align: middle;
