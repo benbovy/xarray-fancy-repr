@@ -1,8 +1,8 @@
 # Xarray Fancy Repr
 
 This package provides enhanced representations of Xarray objects (Dataset,
-DataArray) for a better and more interactive user experience within Jupyter
-notebooks.
+DataArray, Coordinates and Variable) for a better and more interactive user
+experience within Jupyter notebooks.
 
 ## Installation
 
