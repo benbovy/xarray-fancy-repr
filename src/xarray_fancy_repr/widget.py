@@ -2,7 +2,6 @@ import pathlib
 
 import anywidget
 import traitlets as tt
-import xarray as xr
 
 from xarray_fancy_repr.utils import (
     encode_attrs,
@@ -10,6 +9,7 @@ from xarray_fancy_repr.utils import (
     encode_indexes,
     encode_variables,
 )
+from xarray_fancy_repr.wrap import XarrayObject, XarrayWrap
 
 DIMS = tt.List(tt.Unicode())
 DIM_INFO = tt.Dict(
@@ -43,7 +43,7 @@ class XarrayWidget(anywidget.AnyWidget):
     _esm = pathlib.Path(__file__).parent / "static" / "widget.js"
     _css = pathlib.Path(__file__).parent / "static" / "widget.css"
 
-    _obj_type = tt.Enum(("dataset", "dataarray", "variable")).tag(sync=True)
+    _obj_type = tt.Enum(("dataset", "dataarray", "coordinates", "variable")).tag(sync=True)
     _dim_info = DIM_INFO.tag(sync=True)
     _coords = tt.List(VARIABLE).tag(sync=True)
     _data_vars = tt.List(VARIABLE).tag(sync=True)
@@ -51,39 +51,33 @@ class XarrayWidget(anywidget.AnyWidget):
     _attrs = ATTRS.tag(sync=True)
     _filter_query = tt.Unicode().tag(sync=True)
 
-    def __init__(self, obj: xr.Dataset | xr.DataArray):
+    def __init__(self, obj: XarrayObject):
         self._obj = obj
+        self._wrapped = XarrayWrap(obj)
 
-        if isinstance(obj, xr.Dataset):
-            super().__init__(
-                _obj_type="dataset",
-                _dim_info=encode_dim_info(obj),
-                _coords=encode_variables(obj.coords, obj.xindexes),
-                _data_vars=encode_variables(obj.data_vars),
-                _indexes=encode_indexes(obj.xindexes),
-                _attrs=encode_attrs(obj.attrs),
-            )
-        elif isinstance(obj, xr.DataArray):
-            super().__init__(
-                _obj_type="dataarray",
-                _dim_info=encode_dim_info(obj),
-                _coords=encode_variables(obj.coords, obj.xindexes),
-                _data_vars=encode_variables({obj.name: obj.variable}, obj.xindexes),
-                _indexes=encode_indexes(obj.xindexes),
-                _attrs=encode_attrs(obj.attrs),
-            )
+        super().__init__(
+            _obj_type=self._wrapped.obj_type,
+            _dim_info=encode_dim_info(self._wrapped),
+            _coords=encode_variables(self._wrapped.coords, self._wrapped.xindexes),
+            _data_vars=encode_variables(self._wrapped.data_vars),
+            _indexes=encode_indexes(self._wrapped.xindexes),
+            _attrs=encode_attrs(self._wrapped.attrs),
+        )
 
     @tt.observe("_filter_query")
     def _filter(self, change):
-        name = change["new"]
+        query = change["new"]
 
-        if name == "":
-            new_coords = self._obj.coords
-            new_data_vars = self._obj.data_vars
+        if query == "":
+            new_coords = self._wrapped.coords
         else:
-            new_coords = {k: v for k, v in self._obj.coords.items() if name in v.dims}
-            new_data_vars = {k: v for k, v in self._obj.data_vars.items() if name in v.dims}
+            new_coords = {k: v for k, v in self._wrapped.coords.items() if query in v.dims}
+
+        if query == "" or self._wrapped.obj_type != "dataset":
+            new_data_vars = self._wrapped.data_vars
+        else:
+            new_data_vars = {k: v for k, v in self._wrapped.data_vars.items() if query in v.dims}
 
         with self.hold_sync():
-            self._coords = encode_variables(new_coords, self._obj.xindexes)
+            self._coords = encode_variables(new_coords, self._wrapped.xindexes)
             self._data_vars = encode_variables(new_data_vars)

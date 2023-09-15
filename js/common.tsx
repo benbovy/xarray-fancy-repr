@@ -158,7 +158,7 @@ export const MappingSection = (props: MappingSectionProps) => {
   );
 };
 
-export const DimsSection = ({ dimInfo }: { dimInfo: DimInfo }) => {
+export const DimsList = ({ dimInfo }: { dimInfo: DimInfo }) => {
   const items = Object.entries(dimInfo).map(([dim, value]) => (
     <>
       <li>
@@ -170,6 +170,14 @@ export const DimsSection = ({ dimInfo }: { dimInfo: DimInfo }) => {
 
   return (
     <>
+      <ul className="xr-dim-list">{items}</ul>
+    </>
+  );
+};
+
+export const DimsSection = ({ dimInfo }: { dimInfo: DimInfo }) => {
+  return (
+    <>
       <input
         className="xr-section-summary-in"
         type="checkbox"
@@ -178,7 +186,7 @@ export const DimsSection = ({ dimInfo }: { dimInfo: DimInfo }) => {
       />
       <label className="xr-section-summary">Dimensions:</label>
       <div className="xr-section-inline-details">
-        <ul className="xr-dim-list">{items}</ul>
+        <DimsList dimInfo={dimInfo} />
       </div>
       <div className="xr-section-details"></div>
     </>

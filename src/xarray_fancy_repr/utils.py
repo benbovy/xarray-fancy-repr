@@ -5,6 +5,8 @@ from xarray.core.formatting import inline_index_repr, inline_variable_array_repr
 from xarray.core.formatting_html import short_data_repr_html, short_index_repr_html
 from xarray.core.indexes import Indexes
 
+from xarray_fancy_repr.wrap import XarrayObject, XarrayWrap
+
 
 def encode_attrs(attrs: Mapping) -> dict[str, str]:
     return {str(k): str(v) for k, v in attrs.items()}
@@ -59,9 +61,14 @@ def encode_indexes(indexes: Indexes) -> list[dict]:
     return encoded
 
 
-def encode_dim_info(obj: xr.Dataset | xr.DataArray):
+def encode_dim_info(obj: XarrayObject | XarrayWrap):
     encoded = {}
-    indexed_dims = obj.xindexes.dims
+
+    if isinstance(obj, xr.Variable):
+        indexed_dims = {}
+    else:
+        indexed_dims = obj.xindexes.dims
+
     for dim, size in obj.sizes.items():
         encoded[dim] = {"size": size, "hasIndex": dim in indexed_dims}
     return encoded
