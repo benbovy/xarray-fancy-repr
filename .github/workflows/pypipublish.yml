@@ -1,0 +1,28 @@
+name: Upload Python Package on PyPI
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      name: pypi
+      url: https://pypi.org/p/xarray-fancy-repr
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+      - name: Install publish dependencies
+        run: python -m pip install build hatch
+      - name: Build package
+        run: python -m build . -o py_dist
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: py_dist/
