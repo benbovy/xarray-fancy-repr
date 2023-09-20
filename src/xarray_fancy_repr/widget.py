@@ -76,18 +76,21 @@ class XarrayWidget(anywidget.AnyWidget):
             self._filter_clear()
             return
 
+        def is_in(value):
+            return query in str(value).lower()
+
         def in_dims(dims):
-            return any(query in d for d in dims)
+            return any(is_in(d) for d in dims)
 
         def in_attrs(attrs):
-            return any(query in k or query in v for k, v in attrs.items())
+            return any(is_in(k) or is_in(v) for k, v in attrs.items())
 
         coord_names = set()
         data_var_names = set()
 
         if "name" in by:
-            coord_names.update({k for k in self._wrapped.coords if query in k})
-            data_var_names.update({k for k in self._wrapped.data_vars if query in k})
+            coord_names.update({k for k in self._wrapped.coords if is_in(k)})
+            data_var_names.update({k for k in self._wrapped.data_vars if is_in(k)})
         if "dim" in by:
             coord_names.update({k for k, v in self._wrapped.coords.items() if in_dims(v.dims)})
             data_var_names.update(
@@ -109,7 +112,7 @@ class XarrayWidget(anywidget.AnyWidget):
             }
 
         if "attrs" in by:
-            new_attrs = {k: v for k, v in self._wrapped.attrs.items() if query in k or query in v}
+            new_attrs = {k: v for k, v in self._wrapped.attrs.items() if is_in(k) or is_in(v)}
         else:
             new_attrs = self._wrapped.attrs
 
