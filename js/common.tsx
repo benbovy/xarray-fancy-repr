@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useModelState } from "@anywidget/react";
 import { AttrsIcon, DataIcon } from "./icons";
 import { Attrs, DimInfo, Index, Variable } from "./types";
 import "./styles.css";
@@ -159,9 +160,17 @@ export const MappingSection = (props: MappingSectionProps) => {
 };
 
 export const DimsList = ({ dimInfo }: { dimInfo: DimInfo }) => {
+  const [_1, setFilterBy] = useModelState<string[]>("_filter_by");
+  const [_2, setQuery] = useModelState<string>("_filter_search");
+
+  const clickHandler = (dim: string) => {
+    setQuery(dim);
+    setFilterBy(["dim"]);
+  };
+
   const items = Object.entries(dimInfo).map(([dim, value]) => (
     <>
-      <li>
+      <li onClick={() => clickHandler(dim)}>
         <span className={value.hasIndex ? "xr-has-index" : ""}>{dim}</span>:{" "}
         {value.size}
       </li>

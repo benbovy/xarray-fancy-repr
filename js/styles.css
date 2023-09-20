@@ -70,34 +70,48 @@ body.vscode-dark {
   text-align: right;
 }
 
-.xr-search > input {
-  background-color: var(--xr-background-color);
-  color: var(--xr-font-color0);
+.xr-search-text {
+  display: inline-flex;
+  flex-direction: row;
   border: solid 1px var(--xr-border-color);
   border-radius: var(--xr-border-radius);
   vertical-align: middle;
+  padding: 1px;
 }
 
-.xr-search > input:focus {
+.xr-search-text:focus-within {
   outline: var(--xr-border-color) solid 1px;
 }
 
-.xr-search > input.active {
+.xr-search-text.active {
   border-color: var(--xr-warn-color);
 }
 
-.xr-search > input.active:focus {
+.xr-search-text.active:focus {
   outline: var(--xr-warn-color) solid 1px;
 }
 
-.xr-search > button {
+.xr-search-text > input {
+  flex-grow: 2;
+  background-color: var(--xr-background-color);
+  color: var(--xr-font-color0);
+  border: none;
+}
+
+.xr-search-text > input:focus {
+  outline: none;
+}
+
+.xr-search > button,
+.xr-search-text > button {
   display: inline;
   color: var(--xr-font-color2);
   background-color: var(--xr-background-color);
   border: none;
 }
 
-.xr-search > button:hover {
+.xr-search > button:hover,
+.xr-search-text > button:hover {
   color: var(--xr-font-color0);
   cursor: pointer;
 }
@@ -108,8 +122,12 @@ body.vscode-dark {
   margin: 0;
 }
 
-.hidden {
+.xr-hidden {
   display: none;
+}
+
+.xr-hidden-alt {
+  visibility: hidden;
 }
 
 .xr-sections {
@@ -236,6 +254,11 @@ body.vscode-dark {
   display: inline-block;
   padding: 0;
   margin: 0;
+  cursor: pointer;
+}
+
+.xr-dim-list li:hover {
+  color: var(--xr-warn-color);
 }
 
 .xr-dim-list:before {
@@ -398,6 +421,7 @@ dl.xr-attrs {
 .xr-icon-data,
 .xr-icon-attrs,
 .xr-icon-filter,
+.xr-icon-clear,
 .xr-no-icon {
   display: inline-block;
   vertical-align: middle;

@@ -1,17 +1,14 @@
 import * as React from "react";
 import { useModelState } from "@anywidget/react";
-import { FilterIcon } from "./icons";
+import { ClearIcon, FilterIcon } from "./icons";
 
 export const Search = () => {
-  const [active, setActive] = React.useState<boolean>(false);
   const [optionsHidden, setOptionsHidden] = React.useState<boolean>(true);
   const [filterBy, setFilterBy] = useModelState<string[]>("_filter_by");
-  const [_, setQuery] = useModelState<string>("_filter_search");
+  const [query, setQuery] = useModelState<string>("_filter_search");
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    var lowerCase = e.target.value.toLowerCase();
-    setActive(!!lowerCase);
-    setQuery(lowerCase);
+    setQuery(e.target.value.toLowerCase());
   };
 
   const onChangeHandler = (key: string) => {
@@ -25,29 +22,41 @@ export const Search = () => {
     setFilterBy(filterByCopy);
   };
 
+  const clearHandler = () => {
+    setQuery("");
+  };
+
   const isChecked = (key: string): boolean => {
     return filterBy.includes(key);
   };
 
   return (
     <div className="xr-search">
-      <input
-        type="text"
-        className={active ? "active" : ""}
-        onChange={inputHandler}
-        placeholder="Search..."
-      />
+      <div className={"xr-search-text" + (!!query ? " active" : "")}>
+        <input
+          type="text"
+          onChange={inputHandler}
+          placeholder="Search..."
+          value={query}
+        />
+        <button
+          className={!!query ? "" : "xr-hidden-alt"}
+          onClick={clearHandler}
+        >
+          <ClearIcon />
+        </button>
+      </div>
       <button
         title="Filter options"
         onClick={() => setOptionsHidden(!optionsHidden)}
       >
         <FilterIcon />
       </button>
-      <div className={optionsHidden ? "hidden" : undefined}>
+      <div className={optionsHidden ? "xr-hidden" : undefined}>
         <ul>
           <li>
             <label>
-              by name
+              search name
               <input
                 type="checkbox"
                 checked={isChecked("name")}
@@ -57,7 +66,7 @@ export const Search = () => {
           </li>
           <li>
             <label>
-              by dimension
+              search dimension
               <input
                 type="checkbox"
                 checked={isChecked("dim")}
@@ -67,7 +76,7 @@ export const Search = () => {
           </li>
           <li>
             <label>
-              by attributes
+              search attribute
               <input
                 type="checkbox"
                 checked={isChecked("attrs")}
