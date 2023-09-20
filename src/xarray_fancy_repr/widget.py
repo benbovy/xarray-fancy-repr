@@ -9,7 +9,7 @@ from xarray_fancy_repr.utils import (
     encode_indexes,
     encode_variables,
 )
-from xarray_fancy_repr.wrap import XarrayObject, XarrayWrap
+from xarray_fancy_repr.wrap import XarrayObject, XarrayWrapper
 
 DIMS = tt.List(tt.Unicode())
 DIM_INFO = tt.Dict(
@@ -54,7 +54,7 @@ class XarrayWidget(anywidget.AnyWidget):
 
     def __init__(self, obj: XarrayObject):
         self._obj = obj
-        self._wrapped = XarrayWrap(obj)
+        self._wrapped = XarrayWrapper(obj)
 
         super().__init__(
             _obj_type=self._wrapped.obj_type,

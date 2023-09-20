@@ -6,7 +6,7 @@ from xarray.core.indexes import Indexes
 XarrayObject = xr.Dataset | xr.DataArray | xr.Coordinates | xr.Variable
 
 
-class XarrayWrap:
+class XarrayWrapper:
     """Lightweight wrapper around Xarray objects providing a common
     interface consumed by the widget representation.
 

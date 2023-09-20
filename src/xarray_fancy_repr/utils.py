@@ -5,7 +5,7 @@ from xarray.core.formatting import inline_index_repr, inline_variable_array_repr
 from xarray.core.formatting_html import short_data_repr_html, short_index_repr_html
 from xarray.core.indexes import Indexes
 
-from xarray_fancy_repr.wrap import XarrayObject, XarrayWrap
+from xarray_fancy_repr.wrap import XarrayObject, XarrayWrapper
 
 
 def encode_attrs(attrs: Mapping) -> dict[str, str]:
@@ -61,7 +61,7 @@ def encode_indexes(indexes: Indexes) -> list[dict]:
     return encoded
 
 
-def encode_dim_info(obj: XarrayObject | XarrayWrap):
+def encode_dim_info(obj: XarrayObject | XarrayWrapper):
     encoded = {}
 
     if isinstance(obj, xr.Variable):
