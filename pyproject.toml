@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "xarray-fancy-repr"
-version = "0.0.1"
+version = "0.0.2"
 description = "Fancy reprs for Xarray objects in Jupyter notebooks"
 keywords = ["xarray", "jupyter", "widget"]
 readme = "README.md"
