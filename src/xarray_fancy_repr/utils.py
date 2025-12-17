@@ -4,6 +4,7 @@ import xarray as xr
 from xarray.core.formatting import inline_index_repr, inline_variable_array_repr
 from xarray.core.formatting_html import short_data_repr_html, short_index_repr_html
 from xarray.core.indexes import Indexes
+from xarray.core.options import OPTIONS
 
 from xarray_fancy_repr.wrap import XarrayObject, XarrayWrapper
 
@@ -44,7 +45,9 @@ def encode_variables(
     if indexes is None:
         indexes = {}
 
-    encoded = [_encode_variable(k, v, has_index=k in indexes) for k, v in variables.items()]
+    encoded = [
+        _encode_variable(k, v, has_index=k in indexes) for k, v in variables.items()
+    ]
 
     return encoded
 
@@ -54,7 +57,7 @@ def encode_indexes(indexes: Indexes) -> list[dict]:
     for idx, index_vars in indexes.group_by_index():
         encoded_idx = {
             "coordNames": list(index_vars),
-            "inlineRepr": inline_index_repr(idx),
+            "inlineRepr": inline_index_repr(idx, max_width=OPTIONS["display_width"]),
             "repr": short_index_repr_html(idx),
         }
         encoded.append(encoded_idx)
